@@ -1,5 +1,7 @@
 package org.iesalandalus.programacion.robot.modelo;
 
+import javax.naming.OperationNotSupportedException;
+
 public class Robot {
     private Coordenada coordenada;
     private Zona zona;
@@ -12,28 +14,28 @@ public class Robot {
 
     }
     public Robot(Zona zona){
-        setZona(new Zona(zona.ancho(), zona.alto()));
+        setZona(zona);
         coordenada = zona.getCentro();
         orientacion = Orientacion.NORTE;
     }
 
     public Robot(Zona zona, Orientacion orientacion){
 
-        setZona(new Zona(zona.ancho(), zona.alto()));
+        setZona(zona);
         coordenada = zona.getCentro();
         setOrientacion(orientacion);
 
     }
 
     public Robot(Zona zona, Orientacion orientacion, Coordenada coordenada){
-        setZona(new Zona(zona.ancho(), zona.alto()));
+        setZona(zona);
         setCoordenada(coordenada);
         setOrientacion(orientacion);
     }
 
     public Robot(Robot robot){
         if(robot == null){
-            throw new NullPointerException("ERROR: El robot que intentas copiar es nulo");
+            throw new NullPointerException("El robot no puede ser nulo.");
         }
         setZona(robot.getZona());
         setOrientacion(robot.getOrientacion());
@@ -47,7 +49,9 @@ public class Robot {
 
     private void setCoordenada(Coordenada coordenada) {
         if(coordenada == null){
-            throw new NullPointerException("ERROR: coordenada es nula");
+            throw new NullPointerException("La coordenada no puede ser nula.");
+        }else if(!zona.pertenece(coordenada)){
+            throw new IllegalArgumentException("La coordenada no pertenece a la zona.");
         }
         this.coordenada = coordenada;
     }
@@ -58,7 +62,7 @@ public class Robot {
 
     private void setZona(Zona zona) {
         if(zona == null){
-            throw new NullPointerException("ERROR: zona es nula");
+            throw new NullPointerException("La zona no puede ser nula.");
         }
         this.zona = zona;
     }
@@ -69,12 +73,12 @@ public class Robot {
 
     private void setOrientacion(Orientacion orientacion) {
         if(orientacion == null){
-            throw new NullPointerException("ERROR: orientacion es nula");
+            throw new NullPointerException("La orientación no puede ser nula.");
         }
         this.orientacion = orientacion;
     }
 
-    public void avanzar(){
+    public void avanzar() throws OperationNotSupportedException {
 
         int nuevaX;
         int nuevaY;
@@ -119,7 +123,12 @@ public class Robot {
                 break;
 
         }
-       setCoordenada(nuevaCoordenada);
+
+        if(!zona.pertenece(nuevaCoordenada)){
+            throw new OperationNotSupportedException("No se puede avanzar, ya que se sale de la zona.");
+        }
+        coordenada = nuevaCoordenada;
+
 
     }
 

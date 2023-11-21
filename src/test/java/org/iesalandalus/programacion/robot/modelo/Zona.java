@@ -22,34 +22,36 @@ public record Zona(int ancho, int alto) {
 
     private void validarAncho(int ancho){
         if(ancho > 100 || ancho < 10){
-            throw new IllegalArgumentException("ERROR: El ancho es incorrecto");
+            throw new IllegalArgumentException("Ancho no válido.");
         }
 
     }
     private void validarAlto(int alto){
         if(alto > 100 || alto < 10){
-            throw new IllegalArgumentException("ERROR: El alto es incorrecto");
+            throw new IllegalArgumentException("Alto no válido.");
         }
     }
 
     public Coordenada getCentro(){
         int centroX = ancho /2;
         int centroY = alto /2;
-        return new Coordenada(ancho, alto);
+        return new Coordenada(centroX, centroY);
     }
 
     public boolean pertenece(Coordenada coordenada){
-        if(perteneceX(coordenada.x())&& perteneceY(coordenada.y())){
-            return  true;
+        if(coordenada == null) {
+            throw new NullPointerException("La coordenada no puede ser nula.");
+        }else if(!perteneceY(coordenada.y())|| !perteneceX(coordenada.x())){
+            return false;
         }
-        return  false;
+        return true;
     }
 
     private boolean perteneceX(int x){
-        return x >= 10 && x <= 100;
+        return  x >= 0 && x < ancho;
     }
 
     private boolean perteneceY(int y){
-        return y >= 10 && y <= 100;
+        return y >= 0 && y < alto;
     }
 }

@@ -19,8 +19,6 @@ public enum Orientacion {
 
     @Override
     public String toString() {
-        return "Orientacion{" +
-                "nombre='" + nombre + '\'' +
-                '}';
+        return nombre;
     }
 }
