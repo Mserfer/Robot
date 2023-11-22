@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.robot.modelo;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.Objects;
 
 public class Robot {
     private Coordenada coordenada;
@@ -200,20 +201,13 @@ public class Robot {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Robot robot = (Robot) o;
-
-        if (coordenada != null ? !coordenada.equals(robot.coordenada) : robot.coordenada != null) return false;
-        if (zona != null ? !zona.equals(robot.zona) : robot.zona != null) return false;
-        return orientacion == robot.orientacion;
+        return Objects.equals(coordenada, robot.coordenada) && Objects.equals(zona, robot.zona) && orientacion == robot.orientacion;
     }
 
     @Override
     public int hashCode() {
-        int result = coordenada != null ? coordenada.hashCode() : 0;
-        result = 31 * result + (zona != null ? zona.hashCode() : 0);
-        result = 31 * result + (orientacion != null ? orientacion.hashCode() : 0);
-        return result;
+        return Objects.hash(coordenada, zona, orientacion);
     }
 
     @Override
